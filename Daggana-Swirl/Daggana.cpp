@@ -7,15 +7,13 @@
 
 #include "Daggana.h"
 
-Daggana::Daggana()
-{
-}
+Daggana::Daggana() { }
 
-Daggana::Daggana(const Daggana& orig)
+Daggana::Daggana(Type type)
 {
+    this->type = type;
 }
+Daggana::Daggana(const Daggana& orig) { }
 
-Daggana::~Daggana()
-{
-}
+Daggana::~Daggana() { }
 

@@ -10,10 +10,15 @@
 
 class Daggana
 {
+    Type type;
+
 public:
-	Daggana();
-	Daggana(const Daggana& orig);
-	virtual ~Daggana();
+    enum Type {SQUARE, TRIANGLE, CIRCLE, DICK, ASS};
+    Daggana();
+    Daggana(Type);
+    Daggana(const Daggana& orig);
+    virtual ~Daggana();
+    Type getType();
 private:
 
 };
