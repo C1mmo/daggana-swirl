@@ -13,7 +13,7 @@ class Daggana
     Type type;
 
 public:
-    enum Type {SQUARE, TRIANGLE, CIRCLE, DICK, ASS};
+    enum Type {SQUARE, TRIANGLE, CIRCLE, PENTAGON, HEXAGON};
     Daggana();
     Daggana(Type);
     Daggana(const Daggana& orig);
