@@ -17,3 +17,8 @@ Daggana::Daggana(const Daggana& orig) { }
 
 Daggana::~Daggana() { }
 
+void Daggana::setType(Type type)
+{
+    this->type = type;
+}
+

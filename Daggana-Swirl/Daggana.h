@@ -10,17 +10,17 @@
 
 class Daggana
 {
-    Type type;
-
+    
 public:
-    enum Type {SQUARE, TRIANGLE, CIRCLE, PENTAGON, HEXAGON};
+    enum Type {SQUARE, TRIANGLE, CIRCLE, PENTAGON, HEXAGON, KEKSIVIELAYKSITAHAN};
     Daggana();
     Daggana(Type);
     Daggana(const Daggana& orig);
     virtual ~Daggana();
     Type getType();
+    void setType(Type type);
 private:
-
+    Type type;
 };
 
 #endif	/* DAGGANA_H */

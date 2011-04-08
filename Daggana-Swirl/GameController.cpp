@@ -21,7 +21,7 @@ void GameController::newGame()
     game = new GameBoard();
 }
 
-int GameController::main()
+int main()
 {
     GameController controller;
 

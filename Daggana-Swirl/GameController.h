@@ -18,7 +18,6 @@ public:
     GameController(const GameController& orig);
     virtual ~GameController();
     void newGame();
-    int main();
 private:
 
 };
