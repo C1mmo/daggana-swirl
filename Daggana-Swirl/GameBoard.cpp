@@ -16,8 +16,17 @@ GameBoard::GameBoard(Size size, GameType gameType, Difficulty difficulty)
     this->gameType = gameType;
     this->difficulty = difficulty;
 
+	srand(time(NULL));
 
-    this->board = new vector<vector <Daggana> > (size, vector<Daggana>(size));
+	for (int row = 0; row < this->size; row++) {
+		vector<Daggana *> newRow;
+		for (int col = 0; col < this->size; col++) {
+			newRow.push_back(new Daggana( rand() % 4 + difficulty ) );
+		}
+		board.push_back(newRow);
+	}
+	
+    //this->board = new vector<vector <Daggana> > (size, vector<Daggana>(size));
     //this->testi = new vector<Daggana> (size, new Daggana());
     //this->rows = new Daggana[size];
     //for (int i = 0; i < size; i++)
@@ -37,7 +46,7 @@ GameBoard::GameBoard(const GameBoard& orig) { }
 
 GameBoard::~GameBoard()
 {
-    delete board;
+    // iteroi vector ja poista dakkanat, sit delete board;
     delete counter;
     delete timer;
 }

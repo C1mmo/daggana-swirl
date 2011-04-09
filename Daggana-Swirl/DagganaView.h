@@ -16,11 +16,11 @@ public:
 	DagganaView(Daggana::Type type);
 	DagganaView(const DagganaView& orig);
 	virtual ~DagganaView();
-	void setType(Daggana::Type type);
+	void setType(const Daggana::Type);
 	Daggana::Type getType();
 private:
 	Daggana::Type type;
-	void switchType();
+	void switchType(const Daggana::Type);
 };
 
 #endif	/* DAGGANAVIEW_H */

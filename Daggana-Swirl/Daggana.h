@@ -12,8 +12,9 @@ class Daggana
 {
     
 public:
-    enum Type {SQUARE, TRIANGLE, CIRCLE, PENTAGON, HEXAGON, KEKSIVIELAYKSITAHAN};
+    enum Type {SQUARE = 0, TRIANGLE = 1, CIRCLE = 2, PENTAGON = 3, HEXAGON = 4, DIAMOND = 5};
     Daggana();
+	Daggana(int);
     Daggana(Type);
     Daggana(const Daggana& orig);
     virtual ~Daggana();

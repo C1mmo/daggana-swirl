@@ -25,12 +25,12 @@ Daggana::Type DagganaView::getType()
 	return this->type;
 }
 
-DagganaView::setType(Daggana::Type type)
+void DagganaView::setType(const Daggana::Type type)
 {
 	this->switchType(type);	
 }
 
-DagganaView::switchType(Daggana::Type newType)
+void DagganaView::switchType(const Daggana::Type newType)
 {
 	// Change image according to type
 	switch (newType)
