@@ -19,7 +19,7 @@ public:
     Daggana(const Daggana& orig);
     virtual ~Daggana();
     Type getType();
-    void setType(Type type);
+    void setType(Type type);	
 private:
     Type type;
 };

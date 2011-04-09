@@ -7,9 +7,26 @@
 
 #include "ScoreCounter.h"
 
-ScoreCounter::ScoreCounter() { }
+ScoreCounter::ScoreCounter()
+{
+	this->score = 0;
+}
 
-ScoreCounter::ScoreCounter(const ScoreCounter& orig) { }
+ScoreCounter::ScoreCounter(const ScoreCounter& orig)
+{
+}
 
-ScoreCounter::~ScoreCounter() { }
+ScoreCounter::~ScoreCounter()
+{
+}
+
+void ScoreCounter::addScore(int score)
+{
+	this->score += score;
+}
+
+int ScoreCounter::getScore()
+{
+	return this->score;
+}
 

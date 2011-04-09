@@ -14,8 +14,10 @@ public:
     ScoreCounter();
     ScoreCounter(const ScoreCounter& orig);
     virtual ~ScoreCounter();
+	void addScore(int);
+	int getScore();
 private:
-
+	int score;
 };
 
 #endif	/* SCORECOUNTER_H */

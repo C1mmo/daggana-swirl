@@ -54,3 +54,7 @@ void Daggana::setType(Type type)
 	this->type = type;
 }
 
+Daggana::Type Daggana::getType(){
+	return this->type;
+}
+

@@ -13,6 +13,7 @@
 #include "Daggana.h"
 #include "ScoreCounter.h"
 #include "Timer.h"
+#include "Coordinate.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ public:
     GameBoard(const GameBoard& orig);
     ~GameBoard();
     vector<vector<Daggana*> > getBoard();
+	Daggana* getDaggana(Coordinate);
 private:
     Size size;
     GameType gameType;
