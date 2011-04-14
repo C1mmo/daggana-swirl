@@ -19,10 +19,27 @@ GameBoard::GameBoard(Size size, GameType gameType, Difficulty difficulty)
 
     srand(time(NULL));
 
-    board = new int[size * size];
+    board = new Daggana[size * size];
 
     for (int i=0; i < size * size; i++)
-        board[i] = rand() % (4 + difficulty);
+    {
+        int random = rand() % (4 + difficulty);
+        switch(random)
+        {
+            case 0 : board[i] = SQUARE;
+            break;
+            case 1 : board[i] = TRIANGLE;
+            break;
+            case 2 : board[i] = CIRCLE;
+            break;
+            case 3 : board[i] = PENTAGON;
+            break;
+            case 4 : board[i] = HEXAGON;
+            break;
+            case 5 : board[i] = DIAMOND;
+            break;
+        }
+    }
 
     /*for (int row = 0; row < this->size; row++)
     {
@@ -37,14 +54,8 @@ GameBoard::GameBoard(Size size, GameType gameType, Difficulty difficulty)
     //this->board = new vector<vector <Daggana> > (size, vector<Daggana>(size));
     //this->rows = new Daggana[size];
     //for (int i = 0; i < size; i++)
-    //  rows[i] = new Daggana[size];
-    //srand(time(NULL));
-    /*for (int i=0; i < board.size(); i++)
-    {
-            for (int j=0; j < board[i].size(); j++)
-            {}
-                    //board[i][j] = new Daggana((rand % 4) + difficulty);
-    }*/
+    //  rows[i] = new Daggana[size];*/
+
     counter = new ScoreCounter();
     timer = new Timer();
 }

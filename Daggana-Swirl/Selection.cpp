@@ -10,6 +10,7 @@ GameBoard::Selection::Selection(int size)
 GameBoard::Selection::Selection(int *selection)
 {
     this->selection = selection;
+    size = sizeof (selection);
 }
 
 void
@@ -49,10 +50,27 @@ GameBoard::Selection::doAction(ActionType type)
         {
             break;
         }
+        case SHUFFLE:
+        {
+            srand(time(NULL));
+            for (int i = 0; i < size -1; i++)
+            {
+                int random = rand() % (size - i);
+                int temp = selection[i];
+                selection[i] = selection[random];
+                selection[random] = temp;
+            }
+            break;
+        }
+        case RANDOMIZE:
+        {
+            break;
+        }
     }
 }
 
-int* GameBoard::Selection::getSelection()
+int*
+GameBoard::Selection::getSelection()
 {
     return this->selection;
 }
