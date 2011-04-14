@@ -18,6 +18,7 @@ public:
     GameController(const GameController& orig);
     virtual ~GameController();
     void newGame();
+    void newGame(GameBoard::Size, GameBoard::GameType, GameBoard::Difficulty);
 private:
 
 };

@@ -21,9 +21,15 @@ void GameController::newGame()
     game = new GameBoard();
 }
 
+void GameController::newGame(GameBoard::Size size, GameBoard::GameType gameType, GameBoard::Difficulty difficulty)
+{
+    game = new GameBoard(size, gameType, difficulty);
+}
+
 int main()
 {
     GameController controller;
+    controller.newGame(GameBoard::MEDIUM_SIZE, GameBoard::LIMITEDTIME, GameBoard::HARD);
 
     return 0;
 
