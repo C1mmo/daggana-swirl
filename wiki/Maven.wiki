@@ -1,0 +1,22 @@
+#summary Yleisiä Maven-ohjeita
+
+= Asennus =
+
+1. Download:
+http://maven.apache.org/download.html
+Mulle tuli reposta toi versio 2.2.1, joten kai sitä on syytä käyttää.
+
+2. Mee svn-repoon (juureen, missä POM.XML):
+mvn eclipse:eclipse -DdownloadSources=true
+
+Netbeansillekin varmaan löytyy joku plugari, millä voi duunaa projektin.
+
+3. Importtaa projekti Eclipseen, lisää "M2_REPO"-muuttuja build pathiin (configure build path -> libraries -> add variable). Arvo tolle on linkki mavenin paikalliseen repositoryyn (mulla ~/.m2/repository).
+
+Aluksi lataa sitten joka komennon jälkeen paketteja, että ei kannata ihmetellä.
+
+= Käyttö =
+
+*Compile:* mvn compile <br>
+*Testien ajaminen:* mvn test <br>
+*Pakkaaminen*: mvn package (ajaa testit, ei onnistu, mikäli joku testeistä failaa).
