@@ -6,7 +6,8 @@
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>Daggana-Swirl</name>
-  <url>http://maven.apache.org</url>
+  <url>http://code.google.com/p/daggana-swirl</url>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -15,4 +16,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
 </project>

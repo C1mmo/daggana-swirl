@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class Selection {
 	public static enum ActionType {
-		LEFT, RIGHT, MIRROR_HORIZONTALLY, MIRROR_VERTICALLY, MIRROR_BOTH, SHUFFLE, RANDOMIZE
+		LEFT, RIGHT, MIRROR_HORIZONTALLY, MIRROR_VERTICALLY, MIRROR_BOTH, SHUFFLE
 	}
 
 	public static enum Direction {
@@ -39,19 +40,6 @@ public class Selection {
 		return this.container.get(index);
 	}
 
-	public String toString() {
-		String str = "";
-
-		for (int i = 0; i < this.container.size(); i++) {
-			if (i > 0 && i % this.rowSize == 0) {
-				str = str.concat("\n");
-			}
-			str = str.concat(this.container.get(i).toString()).concat(" ");
-		}
-
-		return str;
-	}
-
 	/**
 	 * 
 	 * @param enum
@@ -66,20 +54,47 @@ public class Selection {
 		case RIGHT:
 			break;
 		case MIRROR_HORIZONTALLY:
-			return new Selection(this.mirrorHorizontally());
+			this.mirrorHorizontally();
+			return this;
 		case MIRROR_VERTICALLY:
-			return new Selection(this.mirrorVertically());
+			this.mirrorVertically();
+			return this;
 		case MIRROR_BOTH:
-			break;
+			this.container = this.mirrorGroup(this.container);			
+			return this;
 		case SHUFFLE:
-			break;
-		case RANDOMIZE:
-			break;
+			this.shuffle();
+			return this;		
 		default:
 			throw new IllegalArgumentException("Invalid action type!");
 		}
 
 		return null;
+	}
+
+	public void shuffle() {
+		Random rand = new Random();
+		List<Integer> used = new ArrayList<Integer>();
+		
+		int from = -1;
+		int to = -1;		
+		
+		while (used.size() < this.size()) {		
+			do {
+				from = rand.nextInt(this.size());
+			} while (used.contains(from));
+			
+			do {
+				to = rand.nextInt(this.size());
+			} while (used.contains(to));
+			
+			this.container = this.switchPlaces(from, to, this.container);
+			
+			used.add(from);
+			used.add(to);			
+		}
+		
+		System.out.println(this.toString());
 	}
 
 	/**
@@ -104,7 +119,7 @@ public class Selection {
 
 		return newSelection;
 	}
-
+	
 	private List<Integer> mirrorVertically() {
 		List<Integer> newSelection = new ArrayList<Integer>(this.container);
 		int rowFromBottom = -1;
@@ -135,26 +150,50 @@ public class Selection {
 
 		return newSelection;
 	}
+	
+	private List<Integer> mirrorGroup(List<Integer> subList) {
 
-	public List<Integer> peel(List<Integer> subject, int layer) {
-		ArrayList<ArrayList<Integer>> sides = new ArrayList<ArrayList<Integer>>();
+		if (subList.size() < 2) {
+			return subList;
+		}
 
+		int half = (int) Math.floor(subList.size() / 2) - 1;
+
+		for (int i = 0; i <= half; i++) {
+			subList = this.switchPlaces(i, subList.size() - (i + 1), subList);
+		}
+
+		return subList;
+	}
+
+	private List<Integer> switchPlaces(int from, int to, List<Integer> subject) {
+		int temp = subject.get(to);
+
+		subject.set(to, subject.get(from));
+		subject.set(from, temp);
+
+		return subject;
+	}
+	
+	public List<List<Integer>> peel(List<Integer> subject, int layer) {
+		List<List<Integer>> sides = new ArrayList<List<Integer>>();		
+		int lastindex = this.container.size() - 1;
+		
 		for (int i = 0; i < 4; i++) {
 			ArrayList<Integer> side = new ArrayList<Integer>();
 			sides.add(side);
 		}
 
-		for (int i = layer + (this.rowSize * layer); i < this.rowSize
-				+ (this.rowSize * layer) - layer; i++) {
-			int lastrow = this.rowSize * (this.rowSize - 1);
+		for (int rowStart = layer + (this.rowSize * layer); rowStart < this.rowSize
+				+ (this.rowSize * layer) - layer; rowStart++) {
 			
-			sides.get(0).add(subject.get(i));
-			sides.get(2).add(subject.get(i + lastrow - layer * this.rowSize));
+			sides.get(0).add(subject.get(rowStart));
+			sides.get(2).add(subject.get(lastindex - rowStart));
 		}
 
-		for (int i = 0 + layer; i < this.rowSize * this.rowSize - 1; i += this.rowSize) {
+		for (int i = layer * this.rowSize; i < this.rowSize * (this.rowSize - layer); i += this.rowSize) {
 			sides.get(1).add(subject.get(i + this.rowSize - 1 - layer));
-			sides.get(3).add(subject.get(i));
+			sides.get(3).add(subject.get(i) + layer);
 		}
 
 		System.out.println("top:" + sides.get(0).toString());
@@ -162,13 +201,9 @@ public class Selection {
 		System.out.println("bottom:" + sides.get(2).toString());
 		System.out.println("left:" + sides.get(3).toString());
 		
-		subject.clear();
+		subject.clear();	
 		
-		for (int i = 0; i < 4; i++) {
-			subject.addAll(sides.get(i));
-		}
-		
-		return subject;
+		return sides;
 	}
 
 	public List<Integer> moveChain(List<Integer> subject, Direction dir) {
@@ -194,31 +229,20 @@ public class Selection {
 
 		return mergeTo;
 	}
+	
+	public String toString() {
+		String str = "";
 
-	private List<Integer> mirrorGroup(List<Integer> subList) {
-
-		if (subList.size() < 2) {
-			return subList;
+		for (int i = 0; i < this.container.size(); i++) {
+			if (i > 0 && i % this.rowSize == 0) {
+				str = str.concat("\n");
+			}
+			str = str.concat(this.container.get(i).toString()).concat(" ");
 		}
 
-		int half = (int) Math.floor(subList.size() / 2);
-
-		for (int i = 0; i <= half / 2; i++) {
-			subList = this.switchPlaces(i, subList.size() - (i + 1), subList);
-		}
-
-		return subList;
+		return str;
 	}
-
-	private List<Integer> switchPlaces(int from, int to, List<Integer> subject) {
-		int temp = subject.get(to);
-
-		subject.set(to, subject.get(from));
-		subject.set(from, temp);
-
-		return subject;
-	}
-
+	
 	/**
 	 * Calculates the row size
 	 * 
