@@ -1,6 +1,7 @@
 package fi.dagganaswirl.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,10 +50,11 @@ public class Selection {
 	public Selection doAction(ActionType type) {
 
 		switch (type) {
-		case LEFT:
+		case LEFT:			
 			break;
 		case RIGHT:
-			break;
+			this.turnRight();
+			return this;
 		case MIRROR_HORIZONTALLY:
 			this.mirrorHorizontally();
 			return this;
@@ -70,6 +72,60 @@ public class Selection {
 		}
 
 		return null;
+	}
+
+	private void turnRight() {		
+		int target = 0;
+		int i = 1;		
+		
+		while (i < this.rowSize - 1) {			
+			target = (i > 0) ? (i + 1) * (this.rowSize - 1) : this.rowSize - 1;		 
+			System.out.println(target);
+			this.container = this.switchPlaces(i, target + i, this.container);
+			System.out.println(this.toString());
+			i++;
+		}
+		
+		System.out.println();
+		
+		i = 1;
+		
+		while (i < this.rowSize - 1) {
+			target = (this.size() - 1) - i;
+			System.out.println(target);
+			this.container = this.switchPlaces(i, target, this.container);
+			System.out.println(this.toString());
+			i++;
+		}
+		
+		i = 1;
+		
+		System.out.println();
+		
+		while (i < rowSize - 1) {
+			target = (this.size()) - (i + 1) * this.rowSize;
+			System.out.println("---->" + target);
+			this.container = this.switchPlaces(i, target, this.container);
+			System.out.println(this.toString());
+			i++;
+		}
+		
+		this.container = this.switchCorners(this.container);
+		
+		System.out.println();
+		
+		System.out.println(this.toString());
+	}
+	
+	private List<Integer> switchCorners(List<Integer> arr) {
+		int temp = arr.get(0);
+			
+		arr.set(0, arr.get(arr.size() - this.rowSize));
+		arr.set(arr.size() - this.rowSize, arr.get(arr.size() - 1));
+		arr.set(arr.size() -1, arr.get(this.rowSize - 1));
+		arr.set(this.rowSize - 1, temp);
+		
+		return arr;
 	}
 
 	public void shuffle() {
@@ -140,7 +196,7 @@ public class Selection {
 
 			int moveTo = i + movementAmount;
 
-			switchPlaces(i, moveTo, newSelection);
+			this.switchPlaces(i, moveTo, newSelection);
 
 			i++;
 		}
@@ -175,58 +231,12 @@ public class Selection {
 		return subject;
 	}
 	
-	public List<List<Integer>> peel(List<Integer> subject, int layer) {
-		List<List<Integer>> sides = new ArrayList<List<Integer>>();		
-		int lastindex = this.container.size() - 1;
-		
-		for (int i = 0; i < 4; i++) {
-			ArrayList<Integer> side = new ArrayList<Integer>();
-			sides.add(side);
-		}
-
-		for (int rowStart = layer + (this.rowSize * layer); rowStart < this.rowSize
-				+ (this.rowSize * layer) - layer; rowStart++) {
-			
-			sides.get(0).add(subject.get(rowStart));
-			sides.get(2).add(subject.get(lastindex - rowStart));
-		}
-
-		for (int i = layer * this.rowSize; i < this.rowSize * (this.rowSize - layer); i += this.rowSize) {
-			sides.get(1).add(subject.get(i + this.rowSize - 1 - layer));
-			sides.get(3).add(subject.get(i) + layer);
-		}
-
-		System.out.println("top:" + sides.get(0).toString());
-		System.out.println("right:" + sides.get(1).toString());
-		System.out.println("bottom:" + sides.get(2).toString());
-		System.out.println("left:" + sides.get(3).toString());
-		
-		subject.clear();	
-		
-		return sides;
-	}
-
-	public List<Integer> moveChain(List<Integer> subject, Direction dir) {
-		LinkedList<Integer> chain = new LinkedList<Integer>();
-		Integer t = null;
-		chain.addAll(subject);
-
-		if (dir == Direction.RIGHT) {
-			t = chain.removeLast();
-			chain.addFirst(t);
-		} else {
-			t = chain.removeFirst();
-			chain.addLast(t);
-		}
-		return chain;
-	}
-
 	private List<Integer> merge(List<Integer> mergeTo, List<Integer> mergeFrom) {
-
+		
 		for (Iterator<Integer> it = mergeFrom.iterator(); it.hasNext();) {
 			mergeTo.add(it.next());
 		}
-
+	
 		return mergeTo;
 	}
 	
@@ -262,4 +272,112 @@ public class Selection {
 
 		return 0;
 	}
+	/*public List<List<Integer>> peel(List<Integer> subject, int layer) {
+	List<List<Integer>> sides = new ArrayList<List<Integer>>();
+	int lastindex = this.container.size() - 1;
+	
+	System.out.println("peeling layer " + layer);
+	
+	for (int i = 0; i < 4; i++) {
+		ArrayList<Integer> side = new ArrayList<Integer>();
+		sides.add(side);
+	}
+
+	for (int rowStart = layer + (this.rowSize * layer); rowStart < this.rowSize
+			+ (this.rowSize * layer) - layer; rowStart++) {
+		
+		sides.get(0).add(subject.get(rowStart));
+		sides.get(2).add(subject.get(lastindex - rowStart));
+	}
+
+	for (int i = layer * this.rowSize; i < this.rowSize * (this.rowSize - layer); i += this.rowSize) {
+		sides.get(1).add(subject.get(i + this.rowSize - 1 - layer));
+		sides.get(3).add(subject.get(i) + layer);
+	}
+
+	System.out.println("top:" + sides.get(0).toString());
+	System.out.println("right:" + sides.get(1).toString());
+	System.out.println("bottom:" + sides.get(2).toString());
+	System.out.println("left:" + sides.get(3).toString());
+	
+	subject.clear();	
+	
+	return sides;
+	}
+	
+	public List<Integer> moveChain(List<Integer> subject, Direction dir) {
+		LinkedList<Integer> chain = new LinkedList<Integer>();
+		Integer t = null;
+		chain.addAll(subject);
+	
+		if (dir == Direction.RIGHT) {
+			t = chain.removeLast();
+			chain.addFirst(t);
+		} else {
+			t = chain.removeFirst();
+			chain.addLast(t);
+		}
+		return chain;
+	}	
+	*/
+	
+	
+	/*private List<Integer> unpeel(List<List<Integer>> outcome) {
+	List<Integer> temp = new ArrayList<Integer>();
+	int layer = (int) Math.floor(outcome.size() / 2);
+	
+	for (int rowStart = layer + (this.rowSize * layer); rowStart < this.rowSize
+	+ (this.rowSize * layer) - layer; rowStart++) {			
+		sides.get(0).add(subject.get(rowStart));
+		sides.get(2).add(subject.get(lastindex - rowStart));
+	}
+	
+	for (int i = layer * this.rowSize; i < this.rowSize * (this.rowSize - layer); i += this.rowSize) {
+		sides.get(1).add(subject.get(i + this.rowSize - 1 - layer));
+		sides.get(3).add(subject.get(i) + layer);
+	}
+	
+	return temp;
+}*/
+/*
+private List<Integer> mergeSides(List<List<Integer>> sides) {
+	List<Integer> merged = new ArrayList<Integer>();		
+	int i = 0;
+	int side = 0;
+	
+	while (side < 4) {
+		while (i < this.rowSize -1) {
+			merged.add(sides.get(side).get(i));
+			i++;
+		}
+		i = 0;
+		side++;
+	}
+	
+	return merged;
+}
+
+public List<List<Integer>> rotateSides(List<List<Integer>> sides, Direction dir) {		
+	List<List<Integer>> newSides = new ArrayList<List<Integer>>();
+	
+	if (dir == Direction.RIGHT) {
+		newSides.add(this.mirrorGroup(sides.get(3)));
+		newSides.add(sides.get(0));
+		newSides.add(sides.get(1));
+		newSides.add(sides.get(2));
+	} else if (dir == Direction.LEFT) {
+		newSides.add(this.mirrorGroup(sides.get(3)));
+		newSides.add(sides.get(0));
+		newSides.add(sides.get(1));
+		newSides.add(sides.get(2));
+	}
+	System.out.println("Printing sides:");
+	System.out.println(newSides.get(0).toString());
+	System.out.println(newSides.get(1).toString());
+	System.out.println(newSides.get(2).toString());
+	System.out.println(newSides.get(3).toString());
+	
+	return newSides;
+}
+ */
 }
